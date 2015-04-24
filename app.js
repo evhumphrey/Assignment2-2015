@@ -148,7 +148,22 @@ app.get('/login', function(req, res){
 });
 
 app.get('/account', ensureAuthenticated, function(req, res){
-  res.render('account', {user: req.user});
+  var query = models.User.where({ ig_id: req.user.ig_id});
+  query.findOne(function (err, user) {
+    if (err) return err;
+    if (user) {
+      // doc may be null if no document matched
+      Instagram.users.info({
+        user_id: user.ig_id,
+        access_token: user.ig_access_token,
+        complete: function(data) {
+          //console.log(profile_pic = data.profile_picture);
+          res.render('account', {user: req.user, profile_pic: data.profile_picture});
+        }
+        
+      });
+    }
+  });
 });
 
 app.get('/igphotos', ensureAuthenticatedInstagram, function(req, res){
