@@ -1,0 +1,10 @@
+/* CSS FILE FOR CUSTOM GLOBAL STYLING CLASSES */
+
+.text-light {
+	font-weight: lighter;
+}
+
+* {
+	color: #333333;
+}
+

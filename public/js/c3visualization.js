@@ -12,7 +12,8 @@
         data: {
           columns: [
             yCounts 
-          ]
+          ],
+          type: 'area-spline'
         }
       });
     });
