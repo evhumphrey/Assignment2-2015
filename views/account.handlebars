@@ -1,9 +1,17 @@
-<p>ID: {{user.id}}</p>
-<p>Name: {{user.name}}</p>
-<p>Instagram ID:{{user.ig_id}}</p>
+<head>
+<link rel="stylesheet" type="text/css" href="css/account.css">
+</head>
 
-<a href="/c3visualization">view C3 visualization</a>
-<br/>
-<a href="/visualization">view D3 visualization</a>
+<div class="container">
+	<div class="page-header center-block">
+		<h1>Hello, @{{user.name}}!</h1>
+		<h2>{{req.user.provider}}</h2> <!-- NOT WORKING -->
+		<img class="img-responsive img-circle center-block" src="//graph.facebook.com/{{user.id}}/picture?type=large">
+	</div>
 
+	<h3>Profile statics</h3>
+	<p><strong>ID:</strong> {{user.id}}</p>
+	<p><strong>Name: </strong>{{user.name}}</p>
+	<p><strong>Instagram ID: </strong>{{user.ig_id}}</p>
 
+</div>
