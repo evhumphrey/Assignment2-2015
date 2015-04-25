@@ -148,6 +148,10 @@ app.get('/login', function(req, res){
 });
 
 app.get('/account', ensureAuthenticated, function(req, res){
+  res.render('account', {user: req.user});
+});
+
+app.get('/igaccount', ensureAuthenticated, function(req, res){
   var query = models.User.where({ ig_id: req.user.ig_id});
   query.findOne(function (err, user) {
     if (err) return err;
@@ -157,8 +161,14 @@ app.get('/account', ensureAuthenticated, function(req, res){
         user_id: user.ig_id,
         access_token: user.ig_access_token,
         complete: function(data) {
-          //console.log(profile_pic = data.profile_picture);
-          res.render('account', {user: req.user, profile_pic: data.profile_picture});
+          //console.log(data.profile_picture);
+          console.log(data);
+          console.log("username: " + data.username);
+          console.log("full_name: " + data.full_name);
+          console.log("media: " + data.counts.media);
+          console.log("followed_by: " + data.counts.followed_by);
+          console.log("follows: " + data.counts.follows);
+          res.render('account', {user: req.user, user_info: data});
         }
         
       });
@@ -250,7 +260,7 @@ app.get('/auth/instagram',
 app.get('/auth/instagram/callback', 
   passport.authenticate('instagram', { failureRedirect: '/login'}),
   function(req, res) {
-    res.redirect('/account');
+    res.redirect('/igaccount');
   });
 
 app.get('/logout', function(req, res){
