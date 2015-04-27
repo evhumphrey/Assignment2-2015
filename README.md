@@ -1,4 +1,4 @@
 COGS 121 Assignment 2 - Spring 2015
 ===========
 
-Instructions are in the wiki.
+Forked from Boilerplate code. C3 and D3 visualization of instagram data.
