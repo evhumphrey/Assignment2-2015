@@ -147,9 +147,12 @@ app.get('/login', function(req, res){
   res.render('login', { user: req.user });
 });
 
+
 app.get('/account', ensureAuthenticated, function(req, res){
+
   res.render('account', {user: req.user});
 });
+
 
 app.get('/igaccount', ensureAuthenticated, function(req, res){
   var query = models.User.where({ ig_id: req.user.ig_id});
@@ -168,7 +171,7 @@ app.get('/igaccount', ensureAuthenticated, function(req, res){
           console.log("media: " + data.counts.media);
           console.log("followed_by: " + data.counts.followed_by);
           console.log("follows: " + data.counts.follows);
-          res.render('account', {user: req.user, user_info: data});
+          res.render('igaccount', {user: req.user, user_info: data});
         }
         
       });
@@ -197,6 +200,106 @@ app.get('/igphotos', ensureAuthenticatedInstagram, function(req, res){
           res.render('photos', {photos: imageArr});
         }
       }); 
+    }
+  });
+});
+
+/*
+app.get('/igSelfPhotos', ensureAuthenticatedInstagram, function(req, res){
+  var query = models.User.where({ ig_id: req.user.ig_id });
+  query.findOne(function (err, user) {
+    if (err) return err;
+    if (user) {
+      Instagram.users.self({
+        access_token: user.ig_access_token,
+        complete: function(data) {
+          console.log("pagination: ");
+          console.log(pagination);
+          console.log("Data:");
+          console.log(data);
+          var selfPhotosArr = data.map(function(item) {
+              if(item.user.username == user.name) {
+                tempJSON = {};
+                tempJSON.url = item.images.low_resolution.url;
+                return tempJSON;
+              }
+          });
+          res.render('igSelfPhotos', {user_pics: selfPhotosArr});
+        }
+      })
+    }
+  });
+});
+*/
+
+app.get('/igSelfPhotos', ensureAuthenticatedInstagram, function(req, res){
+  var query = models.User.where({ ig_id: req.user.ig_id });
+  query.findOne(function (err, user) {
+    if (err) return err;
+    if (user) {
+      Instagram.users.recent({
+        access_token: user.ig_access_token,
+        user_id: user.ig_id,
+        
+        complete: function(data, pagination) {
+
+          var count = 1;
+          var selfPhotosArr = [];
+         
+          console.log("Data:");
+          console.log(data);
+          // NOTE when no pics left, pagination returns '{}'
+          console.log("Pagination:");
+          console.log(pagination);
+          selfPhotosArr = data.map(function(item) {
+              if(item.user.username == user.name) {
+                tempJSON = {};
+                tempJSON.url = item.images.low_resolution.url;
+                tempJSON.filter = item.filter;
+                tempJSON.count = count;
+                count += 1;
+                return tempJSON;
+              }
+          });
+          /* BROKEN
+          if(pagination != null) {
+            console.log("oo");
+            var p = pagination.next_max_id;
+            var p2 = pagination;
+            while(p2 != "{}") {
+              Instagram.users.recent({
+                access_token: user.ig_access_token,
+                user_id: user.ig_id,
+                max_id: p,
+                complete: function(data, pagination) {
+
+        
+         
+         
+                  console.log("Data:");
+                  console.log(data);
+                  // NOTE when no pics left, pagination returns '{}'
+                  console.log("Pagination:");
+                  console.log(pagination);
+                  p = pagination.next_max_id;
+                  p2 = pagination;
+                  selfPhotosArr = data.map(function(item) {
+                  if(item.user.username == user.name) {
+                    tempJSON = {};
+                    tempJSON.url = item.images.low_resolution.url;
+                    tempJSON.count = count;
+                    count += 1;
+                    return tempJSON;
+                  }
+                  });
+              }
+            })
+          }
+        } */
+        
+          res.render('igSelfPhotos', {user_pics: selfPhotosArr});
+        }
+      })
     }
   });
 });
