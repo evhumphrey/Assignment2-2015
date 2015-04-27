@@ -29,45 +29,9 @@
 
 <h1> Media Count of Your Instagram Followers </h1>
 <div id="chart"></div>
-<style>
-label {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
-.bar:hover {
-  fill: brown;
-}
-
-.d3-tip {
-  line-height: 1;
-  font-weight: bold;
-  padding: 12px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  border-radius: 2px;
-}
-
-/* Creates a small triangle extender for the tooltip */
-.d3-tip:after {
-  box-sizing: border-box;
-  display: inline;
-  font-size: 10px;
-  width: 100%;
-  line-height: 1;
-  color: rgba(0, 0, 0, 0.8);
-  content: "\25BC";
-  position: absolute;
-  text-align: center;
-}
-
-/* Style northward tooltips differently */
-.d3-tip.n:after {
-  margin: -1px 0 0 0;
-  top: 100%;
-  left: 0;
-}
-</style>
-<label><input type="checkbox"> Sort values</label>
+<div class="checkbox">
+<label for="sort">Sort values</label>
+<input type="checkbox" name="sort" id="sort">
+</div>
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <script src="js/visualization.js"></script>
