@@ -36,8 +36,11 @@ var svg = d3.select("body").append("svg")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 svg.call(tip);
+
+
 //get json object which contains media counts
 d3.json('/igMediaCounts', function(error, data) {
+
 
   //set domain of x to be all the usernames contained in the data
   scaleX.domain(data.users.map(function(d) { return d.username; }));
