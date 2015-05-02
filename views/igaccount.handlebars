@@ -20,9 +20,9 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a href="/c3visualization">Popularity (C3)</a></li>
-        <li><a href="/visualization">D3</a></li>
-        <li><a href="/d3visualization">New D3</a></li>
+        <li><a href="/c3visualization">Popularity of Followers (C3)</a></li>
+        <li><a href="/visualization">Photo Count of Followers (D3)</a></li>
+        <li><a href="/d3visualization">Photos by You (New D3)</a></li>
       </ul>
       <form class="navbar-form navbar-right" action="/logout" method="GET">
       	<input type="submit" class="btn btn-login nav-btn" value="Log Out">
@@ -38,7 +38,7 @@
 		<h1>Hello, {{user.name}}!</h1>
 		<img class="img-responsive img-circle center-block" src="{{user_info.profile_picture}}">
 	</div>
-  
+
 	<h3>Profile statics</h3>
 	<p><strong>Name: </strong>{{user.name}}</p>
 	<p><strong>Instagram ID: </strong>{{user.ig_id}}</p>

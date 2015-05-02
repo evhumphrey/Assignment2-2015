@@ -23,6 +23,7 @@
 .navbar-app {
 	background-color: white;
 	opacity: 0.95;
+	box-shadow: 0 0.5px 1px gray;
 
 }
 
@@ -30,6 +31,10 @@
 	color: #333333;
 	font-weight: 200;
 	border-bottom: none;
+}
+
+.navbar-app .active {
+	background-color: #D8F0FF;
 }
 
 .btn-logout {
@@ -52,12 +57,12 @@ body .jumbotron {
 
 .btn-login {
 	background-color: #74C7FD;
-	color: #D8F0FF;
+	color: white;
 }
 
 .btn-login:hover {
 	background-color: #a2DAFF;
-	color: #D8F0FF;
+	color: white;
 }
 .text-lightest {
 	font-weight: 100;
@@ -69,6 +74,7 @@ body .jumbotron {
 
 * {
 	color: #333333;
+	font-weight: 200;
 }
 
 body {

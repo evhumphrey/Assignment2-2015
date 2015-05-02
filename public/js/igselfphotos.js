@@ -1,5 +1,8 @@
 (function() {
-
+$(document).ajaxStart(function() {
+    console.log("Start");
+    $(".modal").addClass("loading");
+  });
 
 	$.getJSON('/igselfphotosasync')
 		.done(function(data) {

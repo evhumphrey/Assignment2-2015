@@ -1,3 +1,5 @@
+
+
 var margin = {top: 20, right: 20, bottom: 100, left: 40};
     width = 960 - margin.left - margin.right;
     height = 500 - margin.top - margin.bottom;
@@ -16,15 +18,26 @@ var tip = d3.tip()
 
 d3.json('/igselfphotosasync', function(error, data) {
   console.log(data);
+  
 
   var tip = d3.tip()
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
-    console.log(d);
-    return "<img src=" + data.users[d.index].images.thumbnail.url +">" + "<br># of Likes: <span style='color:pink'>"  + data.users[d.index].likes.count +"</span>";
+    //console.log(d);
+    if (data.users[d.index].caption) {
+      var text = data.users[d.index].caption.text;
+    }
+    else {
+      var text = "[no caption]";
+    }
+    return "<img src=" + data.users[d.index].images.thumbnail.url +">"
+     + "<br># of Likes: <span style='color:pink'>"  + data.users[d.index].likes.count +"</span>"
+     + "<br>" + text;
 });
 
+
+  
   var image = data.users.map(function(item) {
         return item;
       });
@@ -78,14 +91,16 @@ var svg = d3.select("body").append("svg")
 
 svg.call(tip);
 
+
 var node = svg.selectAll("circle")
     .data(nodes)
   .enter().append("circle")
     .style("fill", function(d) { return color(d.cluster); })
     .call(force.drag)
     .on('mouseover', tip.show)
-    .on('mouseout', tip.hide);
-   
+    .on('mouseout', tip.hide)
+ 
+
 
 node.transition()
     .duration(750)
@@ -150,89 +165,3 @@ function collide(alpha) {
   };
 }
 });
-/*
-d3.json('/igselfphotosasync', function(error, data) {
-  console.log(data.photocount);
-})
-/*
-//get json object which contains media counts
-d3.json('/igselfphotos', function(error, data) {
-
-
-  //set domain of x to be all the usernames contained in the data
-  scaleX.domain(data.users.map(function(d) { return d.username; }));
-  //set domain of y to be from 0 to the maximum media count returned
-  scaleY.domain([0, d3.max(data.users, function(d) { return d.counts.media; })]);
-
-  //set up x axis
-  svg.append("g")
-    .attr("class", "x axis")
-    .attr("transform", "translate(0," + height + ")") //move x-axis to the bottom
-    .call(xAxis)
-    // .selectAll("text")  
-    // .style("text-anchor", "end")
-    // .attr("dx", "-.8em")
-    // // .attr("dy", ".15em")
-    // .attr("transform", function(d) {
-    //   return "rotate(-20)" 
-    // });
-
-  //set up y axis
-  svg.append("g")
-    .attr("class", "y axis")
-    .call(yAxis)
-    .append("text")
-    .attr("transform", "rotate(-90)")
-    .attr("y", 6)
-    .attr("dy", ".71em")
-    .style("text-anchor", "end")
-    .text("Number of Photos");
-
-  //set up bars in bar graph
-  svg.selectAll(".bar")
-    .data(data.users)
-    .enter().append("rect")
-    .attr("class", "bar")
-    .attr("x", function(d) { return scaleX(d.username); })
-    .attr("width", scaleX.rangeBand())
-    .attr("y", function(d) { return scaleY(d.counts.media); })
-    .attr("height", function(d) { return height - scaleY(d.counts.media); })
-    .on('mouseover', tip.show)
-    .on('mouseout', tip.hide);
-
-
-
-  d3.select("#sort").on("change", change);
-  /*
-  var sortTimeout = setTimeout(function() {
-    d3.select("#sort").property("checked", true).each(change);
-  }, 2000);
-  */
-/*
-  function change() {
-    //clearTimeout(sortTimeout);
-
-    // Copy-on-write since tweens are evaluated after a delay.
-    var x0 = scaleX.domain(data.users.sort(this.checked
-        ? function(a, b) { return b.counts.media - a.counts.media; }
-        : function(a, b) { return d3.ascending(a.username, b.username); })
-        .map(function(d) { return d.username; }))
-        .copy();
-
-    svg.selectAll(".bar")
-        .sort(function(a, b) { return x0(a.username) - x0(b.username); });
-
-    var transition = svg.transition().duration(750),
-        delay = function(d, i) { return i * 50; };
-
-    transition.selectAll(".bar")
-        .delay(delay)
-        .attr("x", function(d) { return x0(d.username); });
-
-    transition.select(".x.axis")
-        .call(xAxis)
-      .selectAll("g")
-        .delay(delay);
-  }
-
-}); */
