@@ -344,14 +344,131 @@ app.get('/igMediaCounts', ensureAuthenticatedInstagram, function(req, res){
   });
 });
 
+app.get('/igSelfPhotosAsync', ensureAuthenticatedInstagram, function(req, res){
+  var query  = models.User.where({ ig_id: req.user.ig_id });
+  query.findOne(function (err, user) {
+    if (err) return err;
+    if (user) {
+      Instagram.users.info({ 
+        user_id: user.ig_id,
+        access_token: user.ig_access_token,
+        complete: function(data) {
+          // an array of asynchronous functions
+          var asyncTasks = [];
+          var mediaCounts = [];
+           
+          data.forEach(function(item){
+            asyncTasks.push(function(callback){
+              // asynchronous function!
+              Instagram.users.info({ 
+                  user_id: item.id,
+                  access_token: user.ig_access_token,
+                  complete: function(data) {
+                    mediaCounts.push(data);
+                    callback();
+                  }
+                });            
+            });
+          });
+          
+          // Now we have an array of functions, each containing an async task
+          // Execute all async tasks in the asyncTasks array
+          async.parallel(asyncTasks, function(err){
+            // All tasks are done now
+            if (err) return err;
+            return res.json({users: mediaCounts});        
+          });
+        }
+      });   
+    }
+  });
+});
+
+
+app.get('/test', ensureAuthenticatedInstagram, function(req, res){
+  var query  = models.User.where({ ig_id: req.user.ig_id });
+  query.findOne(function (err, user) {
+    if (err) return err;
+    if (user) {
+
+      var max_photo_count = 0;
+      // get user media total count
+      //async.nextTick(function() {
+      Instagram.users.info ({
+        user_id: user.ig_id,
+        access_token: user.ig_access_token,
+        complete: function(data) {
+          // set max photos based on how many users have
+          max_photo_count = data.counts.media;
+          console.log("photos user uploaded: " + max_photo_count);
+
+          // for async whilst condition, to see where in photos we are
+      // To figure this out, I consulted node.js async readme and
+      // https://gist.github.com/harthur/2581133
+      var cur_photo_count = 0;
+      var user_data = [];
+      var next_max_id = null;
+
+        async.whilst(
+          //TEST case for whilst
+          function() {
+            console.log('test: ' + (cur_photo_count < max_photo_count));
+            console.log("cur: " + cur_photo_count);
+            console.log("max: " + max_photo_count);
+            return cur_photo_count < max_photo_count;
+          },
+          //repeatedly call this function until TEST is false
+          function(callback) {
+            console.log("getting photos");
+            
+            var options = {
+              user_id: user.ig_id,
+              access_token: user.ig_access_token,
+              count: max_photo_count,
+              complete: function(data, pagination) {
+                next_max_id = pagination.next_max_id;
+                data.forEach(function(item) {
+                  user_data.push(item);
+                  cur_photo_count++;
+                });
+                 setTimeout(callback, 2000);
+              }
+            }
+
+            if(next_max_id) {
+              options.next_max_id = next_max_id;
+            }
+            Instagram.users.recent(options);
+          },
+          function(err) {
+            return res.json({users: user_data });
+          }
+        );
+        }
+
+      });
+      //});
+
+      
+      
+      
+    }
+  });
+});
+
 app.get('/visualization', ensureAuthenticatedInstagram, function (req, res){
   res.render('visualization');
 }); 
 
 
 app.get('/c3visualization', ensureAuthenticatedInstagram, function (req, res){
+
   res.render('c3visualization');
 }); 
+
+app.get('/d3visualization', ensureAuthenticatedInstagram, function (req, res) {
+  res.render('d3visualization');
+})
 
 app.get('/auth/instagram',
   passport.authenticate('instagram'),

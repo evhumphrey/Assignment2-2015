@@ -1,4 +1,36 @@
 /* CSS FILE FOR CUSTOM GLOBAL STYLING CLASSES */
+/*
+.navbar-fixed-top {
+    height: 70px;
+}
+
+.navbar-nav > li > a, .navbar-brand {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    line-height: 70px;
+}
+
+.navbar-brand {
+	font-size: 1.5em;
+}
+
+.navbar-form > .nav-btn, .navbar-right {
+	
+	line-height: 30px;
+}
+*/
+
+.navbar-form > .btn-danger {
+	
+	color: white;
+	border-style: none;
+}
+
+
+
+.text-lightest {
+	font-weight: 100;
+}
 
 .text-light {
 	font-weight: lighter;
@@ -19,7 +51,6 @@ body {
 
 .modal{
 	display: none;
-	
 	
 	position: fixed;
 	z-index: 1000;

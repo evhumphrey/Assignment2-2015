@@ -25,7 +25,7 @@ var tip = d3.tip()
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
-    return "<strong>#Photos:</strong> <span style='color:red'>" + d.counts.media + "</span>";
+    return "# of Photos: <span style='color:red'>" + d.counts.media + "</span>";
 });
 
 //create svg
@@ -85,13 +85,15 @@ d3.json('/igMediaCounts', function(error, data) {
 
 
 
-  d3.select("input").on("change", change);
+  d3.select("#sort").on("change", change);
+  /*
   var sortTimeout = setTimeout(function() {
-    d3.select("input").property("checked", true).each(change);
+    d3.select("#sort").property("checked", true).each(change);
   }, 2000);
+  */
 
   function change() {
-    clearTimeout(sortTimeout);
+    //clearTimeout(sortTimeout);
 
     // Copy-on-write since tweens are evaluated after a delay.
     var x0 = scaleX.domain(data.users.sort(this.checked

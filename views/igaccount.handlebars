@@ -20,12 +20,12 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a href="/c3visualization">C3</a></li>
+        <li><a href="/c3visualization">Popularity (C3)</a></li>
         <li><a href="/visualization">D3</a></li>
-        <li><a href="#">New D3</a></li>
+        <li><a href="/d3visualization">New D3</a></li>
       </ul>
       <form class="navbar-form navbar-right" action="/logout" method="GET">
-      	<input type="submit" class="btn btn-primary" value="Logout">
+      	<input type="submit" class="btn btn-danger nav-btn" value="Logout">
       </form> 
       
     </div><!-- /.navbar-collapse -->
@@ -33,7 +33,7 @@
 </nav>
 
 <!-- Content -->
-<div class="container">
+
 	<div class="page-header center-block">
 		<h1>Hello, @{{user.name}}!</h1>
 		<h2>{{req.user.provider}}</h2> <!-- NOT WORKING -->
@@ -52,4 +52,3 @@
 	<p><strong>Followers: </strong>{{user_info.counts.followed_by}}</p>
 	<p><strong>Follows: </strong>{{user_info.counts.follows}}</p>
 
-</div>

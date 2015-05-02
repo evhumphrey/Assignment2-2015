@@ -15,8 +15,15 @@
       var xLabels = data.users.map(function(item){
         return item.username;
       });
+
+      /*
+      var userPics = data.users.map(function(item){
+        return item.profile_picture;
+      });
+      */
+  
       
-      yCounts.unshift('Media Count');
+      yCounts.unshift('Photos');
       yCounts2.unshift('Followers');
       xLabels.unshift('Usernames');
       var chart = c3.generate({
