@@ -232,6 +232,7 @@ app.get('/igSelfPhotos', ensureAuthenticatedInstagram, function(req, res){
 });
 */
 
+/*
 app.get('/igSelfPhotos', ensureAuthenticatedInstagram, function(req, res){
   var query = models.User.where({ ig_id: req.user.ig_id });
   query.findOne(function (err, user) {
@@ -296,13 +297,14 @@ app.get('/igSelfPhotos', ensureAuthenticatedInstagram, function(req, res){
             })
           }
         } */
-        
+        /*
           res.render('igSelfPhotos', {user_pics: selfPhotosArr});
         }
       })
     }
   });
 });
+*/
 
 app.get('/igMediaCounts', ensureAuthenticatedInstagram, function(req, res){
   var query  = models.User.where({ ig_id: req.user.ig_id });
@@ -344,48 +346,10 @@ app.get('/igMediaCounts', ensureAuthenticatedInstagram, function(req, res){
   });
 });
 
+
+
+
 app.get('/igSelfPhotosAsync', ensureAuthenticatedInstagram, function(req, res){
-  var query  = models.User.where({ ig_id: req.user.ig_id });
-  query.findOne(function (err, user) {
-    if (err) return err;
-    if (user) {
-      Instagram.users.info({ 
-        user_id: user.ig_id,
-        access_token: user.ig_access_token,
-        complete: function(data) {
-          // an array of asynchronous functions
-          var asyncTasks = [];
-          var mediaCounts = [];
-           
-          data.forEach(function(item){
-            asyncTasks.push(function(callback){
-              // asynchronous function!
-              Instagram.users.info({ 
-                  user_id: item.id,
-                  access_token: user.ig_access_token,
-                  complete: function(data) {
-                    mediaCounts.push(data);
-                    callback();
-                  }
-                });            
-            });
-          });
-          
-          // Now we have an array of functions, each containing an async task
-          // Execute all async tasks in the asyncTasks array
-          async.parallel(asyncTasks, function(err){
-            // All tasks are done now
-            if (err) return err;
-            return res.json({users: mediaCounts});        
-          });
-        }
-      });   
-    }
-  });
-});
-
-
-app.get('/test', ensureAuthenticatedInstagram, function(req, res){
   var query  = models.User.where({ ig_id: req.user.ig_id });
   query.findOne(function (err, user) {
     if (err) return err;
@@ -425,8 +389,13 @@ app.get('/test', ensureAuthenticatedInstagram, function(req, res){
               user_id: user.ig_id,
               access_token: user.ig_access_token,
               count: max_photo_count,
+              max_id: next_max_id,
               complete: function(data, pagination) {
                 next_max_id = pagination.next_max_id;
+                console.log('next_max_id: ' + next_max_id);
+                console.log("vs pagination return: " + pagination.next_max_id);
+                console.log('BEGIN DATA' + data);
+                console.log("end DATA!");
                 data.forEach(function(item) {
                   user_data.push(item);
                   cur_photo_count++;
@@ -436,6 +405,8 @@ app.get('/test', ensureAuthenticatedInstagram, function(req, res){
             }
 
             if(next_max_id) {
+              console.log("IN IF STATEMENT");
+
               options.next_max_id = next_max_id;
             }
             Instagram.users.recent(options);
@@ -454,6 +425,10 @@ app.get('/test', ensureAuthenticatedInstagram, function(req, res){
       
     }
   });
+});
+
+app.get('/igSelfPhotos', ensureAuthenticated, function(req, res){
+  res.render('igSelfPhotos');
 });
 
 app.get('/visualization', ensureAuthenticatedInstagram, function (req, res){
