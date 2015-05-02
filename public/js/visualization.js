@@ -25,7 +25,7 @@ var tip = d3.tip()
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
-    return "# of Photos: <span style='color:red'>" + d.counts.media + "</span>";
+    return "<img src=" +d.profile_picture+">" + "<br># of Photos: <span style='color:red'>"  + d.counts.media+"</span>";
 });
 
 //create svg

@@ -1,36 +1,9 @@
 
-.bar {
-  fill: steelblue;
-}
-
-.bar:hover {
-  fill: brown;
-}
-
-.axis {
-  font: 10px sans-serif;
-}
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.x.axis path {
-  display: none;
-}
-
-.y.axis {
-	margin-left: -10px;
-}
-
 
 .d3-tip {
   line-height: 1;
   font-weight: bold;
-  padding: 12px;
+  padding: 120px;
   background: rgba(0, 0, 0, 0.8);
   color: #fff;
   border-radius: 2px;
@@ -42,7 +15,7 @@
   display: inline;
   font-size: 10px;
   width: 100%;
-  line-height: 1;
+  line-height: 100;
   color: rgba(0, 0, 0, 0.8);
   content: "\25BC";
   position: absolute;

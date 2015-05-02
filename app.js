@@ -412,16 +412,13 @@ app.get('/igSelfPhotosAsync', ensureAuthenticatedInstagram, function(req, res){
             Instagram.users.recent(options);
           },
           function(err) {
-            return res.json({users: user_data });
+            return res.json({users: user_data, photocount: max_photo_count });
           }
         );
         }
 
       });
       //});
-
-      
-      
       
     }
   });
